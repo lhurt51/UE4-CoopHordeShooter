@@ -29,11 +29,17 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	FName MuzzleSocketName;
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	FName TracerTargetName;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "FX")
 	UParticleSystem* MuzzleEffect;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "FX")
 	UParticleSystem* ImpactEffect;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "FX")
+	UParticleSystem* TracerEffect;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
