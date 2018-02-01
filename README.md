@@ -1,7 +1,5 @@
-# UE4-CoopHordeShooter
+# C++ Coop Horde Shooter in Unreal Engine 4.
 Using Tom Looman's Udemy Class, I will create a multiplayer Co-op shooter similar to the Gears of War: Horde Mode
-
-# C++ Multiplayer Third-person Shooter in Unreal Engine 4.
 
 **Looking for a step by step guide?** Check out Tom Looman's **[Unreal Engine 4 Mastery: Create Multiplayer Games with C++](https://www.udemy.com/unrealengine-cpp/?couponCode=TLGH14)!** Which includes two games teaching you C++, Networking for multiplayer and multiple AI including advanced behavior trees for ranged shooter AI.
 
@@ -13,10 +11,10 @@ Get the Udemy Course now and learn C++ for Unreal Engine 4: [LINK](https://www.u
 
 Features
 
-**(Features under this header are currently missing)**
-
 	- Third Person Character
 	- Shooter Weapon Code for hitscan and projectile weapons
+**(Features under this header are currently missing)**
+	
 	- Custom AI 'tracker ball' like Gears of War that tracks and explodes near players.
 	- Power-up system including 'Health Regeneration' and 'Super Speed'
 	- Enemy AI Spawning using 'Environment Query System'
