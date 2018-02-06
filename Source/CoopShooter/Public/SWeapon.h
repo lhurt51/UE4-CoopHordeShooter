@@ -41,6 +41,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "FX")
 	UParticleSystem* TracerEffect;
 
+	UPROPERTY(EditDefaultsOnly, Category = "FX")
+	TSubclassOf<UCameraShake> FireCamShake;
+
 	void PlayFireEffects(FVector TraceEnd);
 
 public:

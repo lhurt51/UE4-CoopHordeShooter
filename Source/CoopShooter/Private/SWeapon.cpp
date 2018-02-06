@@ -31,6 +31,13 @@ void ASWeapon::PlayFireEffects(FVector TraceEnd)
 		UParticleSystemComponent* TracerComp = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), TracerEffect, MuzzleLocation);
 		if (TracerComp) TracerComp->SetVectorParameter(TracerTargetName, TraceEnd);
 	}
+
+	APawn* MyOwner = Cast<APawn>(GetOwner());
+	if (MyOwner)
+	{
+		APlayerController* PC = Cast<APlayerController>(MyOwner->GetController());
+		if (PC) PC->ClientPlayCameraShake(FireCamShake);
+	}
 }
 
 void ASWeapon::Fire()
@@ -46,6 +53,8 @@ void ASWeapon::Fire()
 
 		FVector ShotDirection = EyeRotation.Vector();
 		FVector TraceEnd = EyeLocation + (EyeRotation.Vector() * 10000);
+
+		// Particle "Target" parameter
 		FVector TracerEndPoint = TraceEnd;
 
 		FCollisionQueryParams QueryParams;
