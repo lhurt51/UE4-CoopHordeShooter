@@ -8,6 +8,7 @@
 
 class UCameraComponent;
 class USpringArmComponent;
+class ASWeapon;
 
 UCLASS()
 class COOPSHOOTER_API ASCharacter : public ACharacter
@@ -37,6 +38,14 @@ protected:
 	// To determine if we are zoomed or not
 	bool bWantsToZoom;
 
+	UPROPERTY(VisibleDefaultsOnly, Category = "Player")
+	FName WeaponAttachSocketName;
+
+	ASWeapon* CurrentWeapon;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Player")
+	TSubclassOf<ASWeapon> StarterWeaponClass;
+
 	virtual void BeginPlay() override;
 
 	void MoveForward(float Value);
@@ -50,6 +59,8 @@ protected:
 	void BeginZoom();
 
 	void EndZoom();
+
+	void Fire();
 
 public:	
 	// Called every frame

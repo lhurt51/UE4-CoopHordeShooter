@@ -41,16 +41,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "FX")
 	UParticleSystem* TracerEffect;
 
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	void PlayFireEffects(FVector TraceEnd);
 
+public:
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	virtual void Fire();
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 	
 	
 };
