@@ -17,13 +17,16 @@ public:
 	USHealthComponent();
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "HealthComponent")
+	UPROPERTY(BlueprintReadOnly, Category = "HealthComponent")
 	float Health;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HealthComponent")
+	float DefaultHealth;
 
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
-
+	UFUNCTION()
+	void HandleTakeAnyDamage(AActor* DamageActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 	
 };
