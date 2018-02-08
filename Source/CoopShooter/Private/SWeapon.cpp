@@ -23,10 +23,14 @@ ASWeapon::ASWeapon()
 
 	MuzzleSocketName = "MuzzleSocket";
 	TracerTargetName = "BeamEnd";
+	BulletEjectSocketName = "BulletEjectSocket";
 
 	BaseDamage = 20.0f;
-	bIsAutoMatic = true;
+	bIsAutomatic = true;
 	RateOfFire = 600;
+
+	MaxAmmoCount = 60.0f;
+	AmmoCount = MaxAmmoCount;
 }
 
 void ASWeapon::BeginPlay()
@@ -53,10 +57,15 @@ void ASWeapon::PlayFireEffects(FVector TraceEnd)
 		APlayerController* PC = Cast<APlayerController>(MyOwner->GetController());
 		if (PC) PC->ClientPlayCameraShake(FireCamShake);
 	}
+
+	if (BulletEjectEffect) UGameplayStatics::SpawnEmitterAttached(BulletEjectEffect, MeshComp, BulletEjectSocketName);
 }
 
 void ASWeapon::Fire()
 {
+	if (AmmoCount <= 0) return;
+	AmmoCount--;
+
 	// Trace the world, from pawn eyes to cross hair location
 	AActor* MyOwner = GetOwner();
 
@@ -117,11 +126,16 @@ void ASWeapon::StartFire()
 {
 	float FirstDelay = FMath::Max(LastFiredTime + TimeBetweenShots - GetWorld()->TimeSeconds, 0.0f);
 
-	GetWorldTimerManager().SetTimer(TimerHandle_TimeBetweenShots, this, &ASWeapon::Fire, TimeBetweenShots, bIsAutoMatic, FirstDelay);
+	GetWorldTimerManager().SetTimer(TimerHandle_TimeBetweenShots, this, &ASWeapon::Fire, TimeBetweenShots, bIsAutomatic, FirstDelay);
 }
 
 void ASWeapon::StopFire()
 {
 	GetWorldTimerManager().ClearTimer(TimerHandle_TimeBetweenShots);
+}
+
+void ASWeapon::Reload()
+{
+	AmmoCount = MaxAmmoCount;
 }
 

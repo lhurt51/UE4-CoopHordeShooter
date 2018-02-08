@@ -4,6 +4,15 @@
 
 #include "Components/SkeletalMeshComponent.h"
 
+void ASProjectileWeapon::BeginPlay()
+{
+	Super::BeginPlay();
+
+	BaseDamage = 40.0f;
+	bIsAutomatic = false;
+	RateOfFire = 30;
+}
+
 void ASProjectileWeapon::Fire()
 {
 	// Trace the world, from pawn eyes to cross hair location

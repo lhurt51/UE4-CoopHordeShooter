@@ -18,6 +18,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "ProjectileWeapon")
 	TSubclassOf<AActor> ProjectileClass;
 
+	virtual void BeginPlay() override;
+
 	virtual void Fire() override;
 	
 	
