@@ -34,8 +34,13 @@ protected:
 
 	FTimerHandle TimerHandle_TimeBetweenShots;
 
+	// Base damage of this weapon
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	float BaseDamage;
+
+	// Is the weapon an automatic weapon
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	bool bIsAutoMatic;
 
 	// RPM - Bullets Per Min fired by weapon
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")

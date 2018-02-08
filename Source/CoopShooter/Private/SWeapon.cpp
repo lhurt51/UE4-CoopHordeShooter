@@ -25,7 +25,7 @@ ASWeapon::ASWeapon()
 	TracerTargetName = "BeamEnd";
 
 	BaseDamage = 20.0f;
-
+	bIsAutoMatic = true;
 	RateOfFire = 600;
 }
 
@@ -117,7 +117,7 @@ void ASWeapon::StartFire()
 {
 	float FirstDelay = FMath::Max(LastFiredTime + TimeBetweenShots - GetWorld()->TimeSeconds, 0.0f);
 
-	GetWorldTimerManager().SetTimer(TimerHandle_TimeBetweenShots, this, &ASWeapon::Fire, TimeBetweenShots, true, FirstDelay);
+	GetWorldTimerManager().SetTimer(TimerHandle_TimeBetweenShots, this, &ASWeapon::Fire, TimeBetweenShots, bIsAutoMatic, FirstDelay);
 }
 
 void ASWeapon::StopFire()
