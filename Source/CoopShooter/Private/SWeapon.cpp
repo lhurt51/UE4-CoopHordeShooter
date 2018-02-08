@@ -22,6 +22,8 @@ ASWeapon::ASWeapon()
 
 	MuzzleSocketName = "MuzzleSocket";
 	TracerTargetName = "BeamEnd";
+
+	BaseDamage = 20.0f;
 }
 
 void ASWeapon::PlayFireEffects(FVector TraceEnd)
@@ -72,9 +74,9 @@ void ASWeapon::Fire()
 			// Blocking hit! Process damage
 			AActor* HitActor = Hit.GetActor();
 
-			UGameplayStatics::ApplyPointDamage(HitActor, 20.0f, ShotDirection, Hit, MyOwner->GetInstigatorController(), this, DamageType);
-
 			EPhysicalSurface SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
+
+			UGameplayStatics::ApplyPointDamage(HitActor, (SurfaceType == SURFACE_FLESHVULNERABLE ? BaseDamage * 4.0f : BaseDamage), ShotDirection, Hit, MyOwner->GetInstigatorController(), this, DamageType);
 
 			UParticleSystem* SelectedEffect = nullptr;
 			switch (SurfaceType)
