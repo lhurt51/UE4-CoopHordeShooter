@@ -9,6 +9,7 @@
 class UCameraComponent;
 class USpringArmComponent;
 class ASWeapon;
+class USHealthComponent;
 
 UCLASS()
 class COOPSHOOTER_API ASCharacter : public ACharacter
@@ -26,6 +27,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USpringArmComponent* SpringArmComp;
 
+	USHealthComponent* HealthComp;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	float ZoomedFOV;
 
@@ -37,6 +40,10 @@ protected:
 
 	// To determine if we are zoomed or not
 	bool bWantsToZoom;
+
+	// Pawn died previously
+	UPROPERTY(BlueprintReadOnly, Category = "Player")
+	bool bDied;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Player")
 	FName WeaponAttachSocketName;
@@ -65,6 +72,9 @@ protected:
 	void StopFire();
 
 	void Reload();
+
+	UFUNCTION()
+	void OnHealthChanged(USHealthComponent* HealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
 public:	
 	// Called every frame
