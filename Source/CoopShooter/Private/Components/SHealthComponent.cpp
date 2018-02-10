@@ -2,7 +2,6 @@
 
 #include "SHealthComponent.h"
 
-
 // Sets default values for this component's properties
 USHealthComponent::USHealthComponent()
 {
@@ -31,5 +30,7 @@ void USHealthComponent::HandleTakeAnyDamage(AActor* DamageActor, float Damage, c
 	Health = FMath::Clamp(Health - Damage, 0.0f, DefaultHealth);
 
 	UE_LOG(LogTemp, Log, TEXT("Health Changed: %s"), *FString::SanitizeFloat(Health));
+
+	OnHealthChanged.Broadcast(this, Health, Damage, DamageType, InstigatedBy, DamageCauser);
 }
 
