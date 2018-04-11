@@ -65,6 +65,8 @@ void ASWeapon::PlayFireEffects(FVector TraceEnd)
 
 void ASWeapon::Fire()
 {
+	if (Role < ROLE_Authority) ServerFire();
+
 	if (AmmoCount <= 0) return;
 	AmmoCount--;
 
@@ -122,6 +124,16 @@ void ASWeapon::Fire()
 
 		LastFiredTime = GetWorld()->TimeSeconds;
 	}
+}
+
+void ASWeapon::ServerFire_Implementation()
+{
+	Fire();
+}
+
+bool ASWeapon::ServerFire_Validate()
+{
+	return true;
 }
 
 void ASWeapon::StartFire()
