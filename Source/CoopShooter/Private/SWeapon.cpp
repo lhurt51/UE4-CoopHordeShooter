@@ -9,6 +9,7 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
 #include "TimerManager.h"
+#include "Net/UnrealNetwork.h"
 
 #include "CoopShooter.h"
 
@@ -123,6 +124,8 @@ void ASWeapon::Fire()
 		PlayFireEffects(TracerEndPoint);
 
 		LastFiredTime = GetWorld()->TimeSeconds;
+
+		if (Role == ROLE_Authority) HitScanTrace.TraceTo = TracerEndPoint;
 	}
 }
 
@@ -134,6 +137,12 @@ void ASWeapon::ServerFire_Implementation()
 bool ASWeapon::ServerFire_Validate()
 {
 	return true;
+}
+
+void ASWeapon::OnRep_HitScanTrace()
+{
+	// Play cosmetric FX
+	PlayFireEffects(HitScanTrace.TraceTo);
 }
 
 void ASWeapon::StartFire()
@@ -151,5 +160,12 @@ void ASWeapon::StopFire()
 void ASWeapon::Reload()
 {
 	AmmoCount = MaxAmmoCount;
+}
+
+void ASWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME_CONDITION(ASWeapon, HitScanTrace, COND_SkipOwner);
 }
 
