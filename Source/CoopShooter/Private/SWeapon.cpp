@@ -31,6 +31,8 @@ ASWeapon::ASWeapon()
 
 	MaxAmmoCount = 60.0f;
 	AmmoCount = MaxAmmoCount;
+
+	SetReplicates(true);
 }
 
 void ASWeapon::BeginPlay()
