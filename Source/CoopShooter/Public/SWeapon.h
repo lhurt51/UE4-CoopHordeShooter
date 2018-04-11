@@ -19,7 +19,7 @@ struct FHitScanTrace
 public:
 
 	UPROPERTY()
-	FVector_NetQuantize TraceFrom;
+	TEnumAsByte<EPhysicalSurface>  SurfaceType;
 
 	UPROPERTY()
 	FVector_NetQuantize TraceTo;
@@ -90,6 +90,8 @@ protected:
 
 	void PlayFireEffects(FVector TraceEnd);
 
+	void PlayImpactEffects(EPhysicalSurface SurfaceType, FVector ImpactPoint);
+
 	virtual void Fire();
 
 	UFUNCTION(Server, Reliable, WithValidation)
@@ -107,6 +109,7 @@ private:
 
 	float LastFiredTime;
 
+	UPROPERTY(Replicated)
 	int16 AmmoCount;
 
 public:
@@ -116,5 +119,9 @@ public:
 	void StopFire();
 
 	void Reload();
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerReload();
+
 	
 };
