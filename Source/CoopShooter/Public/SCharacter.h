@@ -43,7 +43,7 @@ protected:
 	bool bWantsToZoom;
 
 	// Pawn died previously
-	UPROPERTY(BlueprintReadOnly, Category = "Player")
+	UPROPERTY(Replicated, BlueprintReadOnly, Category = "Player")
 	bool bDied;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Player")
