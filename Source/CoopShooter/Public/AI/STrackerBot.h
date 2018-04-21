@@ -39,6 +39,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "TrackerBot")
 	float RequiredDstToTarget;
 
+	// Dynamic material to pulse on damage
+	UMaterialInstanceDynamic* MatInst;
+
 	UFUNCTION()
 	void HandleTakeDamage(USHealthComponent* InHealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
