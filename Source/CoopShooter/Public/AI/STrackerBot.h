@@ -71,6 +71,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Sound")
 	USoundCue* ExplodeSound;
 
+	// The power boost of the bot, affects damaged cause to enemied and color of the bot (1 to 4)
+	int32 PowerLevel;
+
 	void DamageSelf();
 
 	UFUNCTION()
@@ -79,6 +82,9 @@ protected:
 	FVector GetNextPathPoint();
 
 	void SelfDestruct();
+
+	// Find nearby enenmies and grow in 'power level' based on the amount
+	void OnCheckNearbyBots();
 
 public:	
 	// Called every frame
