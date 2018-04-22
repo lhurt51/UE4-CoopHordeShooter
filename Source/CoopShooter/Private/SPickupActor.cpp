@@ -58,7 +58,7 @@ void ASPickupActor::NotifyActorBeginOverlap(AActor* OtherActor)
 	// Grant a powerup to player if available
 	if (Role == ROLE_Authority && PowerupInstance)
 	{
-		PowerupInstance->ActivatePowerup();
+		PowerupInstance->ActivatePowerup(OtherActor);
 		PowerupInstance = nullptr;
 
 		// SetTimer to respawn
