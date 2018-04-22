@@ -73,6 +73,7 @@ protected:
 
 	void StopFire();
 
+	UFUNCTION(BlueprintCallable, Category = "Character")
 	void Reload();
 
 	UFUNCTION()
