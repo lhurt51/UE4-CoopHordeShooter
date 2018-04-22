@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "SPowerupActor.generated.h"
 
+class UStaticMeshComponent;
+class UPointLightComponent;
+
 UCLASS()
 class COOPSHOOTER_API ASPowerupActor : public AActor
 {
@@ -16,8 +19,11 @@ public:
 	ASPowerupActor();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	UStaticMeshComponent* MeshComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	UPointLightComponent* LightComp;
 
 	/* Time between powerup ticks */
 	UPROPERTY(EditDefaultsOnly, Category = "Powerups")
@@ -31,6 +37,15 @@ protected:
 
 	/* Total number of ticks applied */
 	int32 TicksProcessed;
+
+	UPROPERTY(ReplicatedUsing=OnRep_PowerActive)
+	bool bIsPowerupActive;
+
+	UFUNCTION()
+	void OnRep_PowerActive();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Powerups")
+	void OnPowerupStateChanged(bool bNewIsActive);
 
 	UFUNCTION()
 	void OnTickPowerup();
