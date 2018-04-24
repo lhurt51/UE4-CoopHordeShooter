@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameModeBase.h"
-#include "SGameMode.generated.h"
+#include "GameFramework/GameStateBase.h"
+#include "SGameState.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class COOPSHOOTER_API ASGameMode : public AGameModeBase
+class COOPSHOOTER_API ASGameState : public AGameStateBase
 {
 	GENERATED_BODY()
 	
