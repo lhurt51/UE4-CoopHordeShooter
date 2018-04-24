@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "CoopShooterGameModeBase.generated.h"
+#include "SGameMode.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class COOPSHOOTER_API ACoopShooterGameModeBase : public AGameModeBase
+class COOPSHOOTER_API ASGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 	
