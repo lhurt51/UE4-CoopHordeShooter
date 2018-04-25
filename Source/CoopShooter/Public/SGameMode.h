@@ -61,6 +61,8 @@ protected:
 
 	void SetWaveState(EWaveState NewState);
 
+	void RestartDeadPlayers();
+
 public:
 
 	virtual void Tick(float DeltaSeconds) override;
