@@ -29,7 +29,7 @@ ASWeapon::ASWeapon()
 	BaseDamage = 20.0f;
 	BulletSpread = 1.0f;
 	bIsAutomatic = true;
-	RateOfFire = 500;
+	RateOfFire = 400;
 
 	MaxAmmoCount = 60.0f;
 	AmmoCount = MaxAmmoCount;
@@ -209,6 +209,6 @@ void ASWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetime
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME_CONDITION(ASWeapon, HitScanTrace, COND_SkipOwner);
-	DOREPLIFETIME(ASWeapon, AmmoCount);
+	DOREPLIFETIME_CONDITION(ASWeapon, AmmoCount, COND_SkipOwner);
 }
 
