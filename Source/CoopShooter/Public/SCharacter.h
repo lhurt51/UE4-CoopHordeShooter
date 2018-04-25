@@ -69,17 +69,20 @@ protected:
 
 	void EndZoom();
 
-	void StartFire();
-
-	void StopFire();
-
 	UFUNCTION(BlueprintCallable, Category = "Character")
 	void Reload();
 
 	UFUNCTION()
 	void OnHealthChanged(USHealthComponent* InHealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
-public:	
+public:
+
+	UFUNCTION(BlueprintCallable, Category = "Player")
+	void StartFire();
+
+	UFUNCTION(BlueprintCallable, Category = "Player")
+	void StopFire();
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

@@ -92,16 +92,6 @@ void ASCharacter::EndZoom()
 	bWantsToZoom = false;
 }
 
-void ASCharacter::StartFire()
-{
-	if (CurrentWeapon) CurrentWeapon->StartFire();
-}
-
-void ASCharacter::StopFire()
-{
-	if (CurrentWeapon) CurrentWeapon->StopFire();
-}
-
 void ASCharacter::Reload()
 {
 	if (CurrentWeapon) CurrentWeapon->Reload();
@@ -122,6 +112,16 @@ void ASCharacter::OnHealthChanged(USHealthComponent* InHealthComp, float Health,
 
 		SetLifeSpan(10.0f);
 	}
+}
+
+void ASCharacter::StartFire()
+{
+	if (CurrentWeapon) CurrentWeapon->StartFire();
+}
+
+void ASCharacter::StopFire()
+{
+	if (CurrentWeapon) CurrentWeapon->StopFire();
 }
 
 // Called every frame

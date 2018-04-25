@@ -28,7 +28,7 @@ ASWeapon::ASWeapon()
 
 	BaseDamage = 20.0f;
 	bIsAutomatic = true;
-	RateOfFire = 600;
+	RateOfFire = 300;
 
 	MaxAmmoCount = 60.0f;
 	AmmoCount = MaxAmmoCount;
@@ -183,6 +183,8 @@ void ASWeapon::StopFire()
 
 void ASWeapon::Reload()
 {
+	if (AmmoCount == MaxAmmoCount) return;
+
 	if (Role < ROLE_Authority) ServerReload();	
 	else AmmoCount = MaxAmmoCount;
 }
