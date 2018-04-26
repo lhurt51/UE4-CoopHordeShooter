@@ -47,7 +47,7 @@ void USHealthComponent::HandleTakeAnyDamage(AActor* DamageActor, float Damage, c
 {
 	if (Damage <= 0.0f || bIsDead) return;
 
-	if (DamageCauser != DamageActor && IsFriendly(DamageActor, DamageCauser)) return;
+	if (IsFriendly(DamageActor, DamageCauser)) return;
 
 	// Update health clamped
 	Health = FMath::Clamp(Health - Damage, 0.0f, DefaultHealth);

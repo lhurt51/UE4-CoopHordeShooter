@@ -136,7 +136,7 @@ void ASWeapon::Fire()
 
 			SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
 
-			UGameplayStatics::ApplyPointDamage(HitActor, (SurfaceType == SURFACE_FLESHVULNERABLE ? BaseDamage * 4.0f : BaseDamage), ShotDirection, Hit, MyOwner->GetInstigatorController(), MyOwner, DamageType);
+			UGameplayStatics::ApplyPointDamage(HitActor, (SurfaceType == SURFACE_FLESHVULNERABLE ? BaseDamage * 4.0f : BaseDamage), ShotDirection, Hit, MyOwner->GetInstigatorController(), this, DamageType);
 
 			PlayImpactEffects(SurfaceType, Hit.ImpactPoint);
 
