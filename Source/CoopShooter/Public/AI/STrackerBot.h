@@ -65,6 +65,8 @@ protected:
 
 	FTimerHandle TimerHandle_SelfDamage;
 
+	FTimerHandle TimerHandle_RefreshPath;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Sound")
 	USoundCue* SelfDestructSound;
 	
@@ -80,6 +82,8 @@ protected:
 	void HandleTakeDamage(USHealthComponent* InHealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
 	FVector GetNextPathPoint();
+
+	void RefreshPath();
 
 	void SelfDestruct();
 
