@@ -13,15 +13,19 @@ Features
 
 	- Third Person Character
 	- Shooter Weapon Code for hitscan and projectile weapons
-**(Features under this header are currently missing)**
-	
 	- Custom AI 'tracker ball' like Gears of War that tracks and explodes near players.
 	- Power-up system including 'Health Regeneration' and 'Super Speed'
 	- Enemy AI Spawning using 'Environment Query System'
 	- Horde-mode wave spawning of enemy AI
 	- Advanced AI Bot using hitscan weapon, behavior trees, EQS and custom nodes (Tasks, Decorators, Services)
 	- Custom ActorCompont for Health in any Actor like AI, Player, Explosive Barrel etc.
+	
+	**(Features under this header are currently missing)**
 	- UMG UI
+	
+Challenges
+
+	- 
 
 Udemy Course Link: [DISCOUNT LINK](https://www.udemy.com/unrealengine-cpp/?couponCode=TLGH14)
 
