@@ -194,6 +194,13 @@ void ASWeapon::Reload()
 	else AmmoCount = MaxAmmoCount;
 }
 
+void ASWeapon::OnDeath()
+{
+	MeshComp->SetCollisionProfileName(FName("PhysicsActor"));
+	MeshComp->SetSimulatePhysics(true);
+	SetLifeSpan(10.0f);
+}
+
 void ASWeapon::ServerReload_Implementation()
 {
 	Reload();

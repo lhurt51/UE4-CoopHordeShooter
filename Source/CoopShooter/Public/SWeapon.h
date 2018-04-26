@@ -127,5 +127,7 @@ public:
 	UFUNCTION(Server, Reliable, WithValidation)
 	void ServerReload();
 
+	void OnDeath();
+
 	
 };

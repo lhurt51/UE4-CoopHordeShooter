@@ -7,6 +7,7 @@
 #include "TimerManager.h"
 
 #include "SPowerupActor.h"
+#include "SCharacter.h"
 
 
 // Sets default values
@@ -31,10 +32,7 @@ void ASPickupActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (Role == ROLE_Authority)
-	{
-		Respawn();
-	}
+	if (Role == ROLE_Authority) Respawn();
 }
 
 void ASPickupActor::Respawn()
@@ -55,14 +53,19 @@ void ASPickupActor::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
 
-	// Grant a powerup to player if available
-	if (Role == ROLE_Authority && PowerupInstance)
-	{
-		PowerupInstance->ActivatePowerup(OtherActor);
-		PowerupInstance = nullptr;
+	ASCharacter* PlayerPawn = Cast<ASCharacter>(OtherActor);
 
-		// SetTimer to respawn
-		GetWorldTimerManager().SetTimer(TimerHandle_RespawnTimer, this, &ASPickupActor::Respawn, CooldownDuration);
+	if (PlayerPawn && PlayerPawn->IsPlayerControlled())
+	{
+		// Grant a powerup to player if available
+		if (Role == ROLE_Authority && PowerupInstance)
+		{
+			PowerupInstance->ActivatePowerup(OtherActor);
+			PowerupInstance = nullptr;
+
+			// SetTimer to respawn
+			GetWorldTimerManager().SetTimer(TimerHandle_RespawnTimer, this, &ASPickupActor::Respawn, CooldownDuration);
+		}
 	}
 }
 
