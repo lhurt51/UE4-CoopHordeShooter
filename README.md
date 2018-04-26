@@ -9,19 +9,27 @@ Get the Udemy Course now and learn C++ for Unreal Engine 4: [LINK](https://www.u
 
 ![alt text](http://www.tomlooman.com/wp-content/uploads/2017/12/Thumb_MainUE4Course30_header.jpg)
 
-Features
+Project Features
 
 	- Third Person Character
 	- Shooter Weapon Code for hitscan and projectile weapons
-**(Features under this header are currently missing)**
-	
 	- Custom AI 'tracker ball' like Gears of War that tracks and explodes near players.
 	- Power-up system including 'Health Regeneration' and 'Super Speed'
 	- Enemy AI Spawning using 'Environment Query System'
 	- Horde-mode wave spawning of enemy AI
 	- Advanced AI Bot using hitscan weapon, behavior trees, EQS and custom nodes (Tasks, Decorators, Services)
 	- Custom ActorCompont for Health in any Actor like AI, Player, Explosive Barrel etc.
+**(Features Are Still Being Implemented)**
+
 	- UMG UI
+	
+Subjects Covered
+
+	- 
+	
+Skills Aquired
+
+	-
 
 Udemy Course Link: [DISCOUNT LINK](https://www.udemy.com/unrealengine-cpp/?couponCode=TLGH14)
 
