@@ -20,6 +20,7 @@ Project Features
 	- Advanced AI Bot using hitscan weapon, behavior trees, EQS and custom nodes (Tasks, Decorators, Services)
 	- Custom ActorCompont for Health in any Actor like AI, Player, Explosive Barrel etc.
 **(Features Are Still Being Implemented)**
+
 	- UMG UI
 	
 Subjects Covered
