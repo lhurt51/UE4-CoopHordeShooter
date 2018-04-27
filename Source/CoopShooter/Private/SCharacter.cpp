@@ -105,15 +105,16 @@ void ASCharacter::OnHealthChanged(USHealthComponent* InHealthComp, float Health,
 		// Die
 		bDied = true;
 
-		GetMovementComponent()->StopMovementImmediately();
-		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-		CurrentWeapon->DetachFromActor(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
-		CurrentWeapon->OnDeath();
+		StopFire();
 
 		DetachFromControllerPendingDestroy();
 
-		SetLifeSpan(10.0f);
+		GetMovementComponent()->StopMovementImmediately();
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+		CurrentWeapon->OnDeath();
+
+		SetLifeSpan(5.0f);
 	}
 }
 

@@ -7,6 +7,7 @@
 #include "SHealthComponent.h"
 #include "SGameState.h"
 #include "SPlayerState.h"
+#include "SCharacter.h"
 
 ASGameMode::ASGameMode()
 {
@@ -129,6 +130,7 @@ void ASGameMode::RestartDeadPlayers()
 	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
 	{
 		APlayerController* PC = It->Get();
+		/* Need to fix the player respawn system */
 		if (PC && PC->GetPawn() == nullptr) RestartPlayer(PC);
 	}
 }

@@ -196,9 +196,10 @@ void ASWeapon::Reload()
 
 void ASWeapon::OnDeath()
 {
+	DetachFromActor(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
 	MeshComp->SetCollisionProfileName(FName("PhysicsActor"));
 	MeshComp->SetSimulatePhysics(true);
-	SetLifeSpan(10.0f);
+	SetLifeSpan(7.5f);
 }
 
 void ASWeapon::ServerReload_Implementation()
