@@ -10,7 +10,7 @@
 
 #include "CoopShooter.h"
 #include "SWeapon.h"
-#include "SHealthComponent.h"
+#include "Components/SHealthComponent.h"
 
 
 // Sets default values
@@ -45,7 +45,7 @@ void ASCharacter::BeginPlay()
 	
 	DefaultFOV = CameraComp->FieldOfView;
 
-	if (Role == ROLE_Authority)
+	if (GetLocalRole() == ROLE_Authority)
 	{
 		// Spawn a default weapon
 		FActorSpawnParameters SpawnParams;

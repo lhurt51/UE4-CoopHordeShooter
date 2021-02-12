@@ -1,17 +1,17 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "STrackerBot.h"
+#include "AI/STrackerBot.h"
 
 #include "Components/StaticMeshComponent.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "AI/Navigation/NavigationSystem.h"
-#include "AI/Navigation/NavigationPath.h"
+#include "NavigationSystem.h"
+#include "NavigationPath.h"
 #include "GameFramework/Character.h"
 #include "Sound/SoundCue.h"
 #include "DrawDebugHelpers.h"
 
-#include "SHealthComponent.h"
+#include "Components/SHealthComponent.h"
 #include "SCharacter.h"
 
 static int32 DebugTrackerBotDrawing = 0;
@@ -53,7 +53,7 @@ void ASTrackerBot::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (Role == ROLE_Authority)
+	if (GetLocalRole() == ROLE_Authority)
 	{
 		// Find initial move to
 		NextPathPoint = GetNextPathPoint();
@@ -106,7 +106,7 @@ FVector ASTrackerBot::GetNextPathPoint()
 
 	if (BestTarget)
 	{
-		UNavigationPath* NavPath = UNavigationSystem::FindPathToActorSynchronously(this, GetActorLocation(), BestTarget);
+		UNavigationPath* NavPath = UNavigationSystemV1::FindPathToActorSynchronously(this, GetActorLocation(), BestTarget);
 
 		GetWorldTimerManager().ClearTimer(TimerHandle_RefreshPath);
 		GetWorldTimerManager().SetTimer(TimerHandle_RefreshPath, this, &ASTrackerBot::RefreshPath, 5.0f, false);
@@ -136,7 +136,7 @@ void ASTrackerBot::SelfDestruct()
 	MeshComp->SetVisibility(false, true);
 	MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	if (Role == ROLE_Authority)
+	if (GetLocalRole() == ROLE_Authority)
 	{
 		TArray<AActor*> IgnoredActors;
 		IgnoredActors.Add(this);
@@ -171,7 +171,7 @@ void ASTrackerBot::OnCheckNearbyBots()
 	TArray<FOverlapResult> Overlaps;
 	GetWorld()->OverlapMultiByObjectType(Overlaps, GetActorLocation(), FQuat::Identity, QueryParams, CollShape);
 
-	if (Role == ROLE_Authority && DebugTrackerBotDrawing) DrawDebugSphere(GetWorld(), GetActorLocation(), Radius, 12, FColor::White, false, 1.0f);
+	if (GetLocalRole() == ROLE_Authority && DebugTrackerBotDrawing) DrawDebugSphere(GetWorld(), GetActorLocation(), Radius, 12, FColor::White, false, 1.0f);
 
 	int32 NrOfBots = 0;
 	// Loop over the results using a "range based for loop"
@@ -188,7 +188,7 @@ void ASTrackerBot::OnCheckNearbyBots()
 	// Clamp between min=0 and max=1
 	PowerLevel = FMath::Clamp(NrOfBots, 0, MaxPowerLevel);
 
-	if (Role == ROLE_Authority && DebugTrackerBotDrawing) DrawDebugString(GetWorld(), FVector(0, 0, 0), FString::FromInt(PowerLevel), this, FColor::White, 1.0, true);
+	if (GetLocalRole() == ROLE_Authority && DebugTrackerBotDrawing) DrawDebugString(GetWorld(), FVector(0, 0, 0), FString::FromInt(PowerLevel), this, FColor::White, 1.0, true);
 
 	// Update the material color
 	if (MatInst == nullptr) MatInst = MeshComp->CreateAndSetMaterialInstanceDynamicFromMaterial(0, MeshComp->GetMaterial(0));
@@ -210,7 +210,7 @@ void ASTrackerBot::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (Role == ROLE_Authority && !bExploded)
+	if (GetLocalRole() == ROLE_Authority && !bExploded)
 	{
 		float DstToTarget = (GetActorLocation() - NextPathPoint).Size();
 
@@ -242,7 +242,7 @@ void ASTrackerBot::NotifyActorBeginOverlap(AActor* OtherActor)
 		if (PlayerPawn && !USHealthComponent::IsFriendly(OtherActor, this)) /* We overlapped with a player*/
 		{
 			/* Start self destruction sequence */
-			if (Role == ROLE_Authority) GetWorldTimerManager().SetTimer(TimerHandle_SelfDamage, this, &ASTrackerBot::DamageSelf, SelfDamageInterval, true, 0.0f);
+			if (GetLocalRole() == ROLE_Authority) GetWorldTimerManager().SetTimer(TimerHandle_SelfDamage, this, &ASTrackerBot::DamageSelf, SelfDamageInterval, true, 0.0f);
 
 			bStartedSelfDestruction = true;
 

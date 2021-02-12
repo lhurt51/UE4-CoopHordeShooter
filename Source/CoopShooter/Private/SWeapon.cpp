@@ -95,7 +95,7 @@ void ASWeapon::PlayImpactEffects(EPhysicalSurface SurfaceType, FVector ImpactPoi
 void ASWeapon::Fire()
 {
 	// PLays server function if the player is not the server
-	if (Role < ROLE_Authority) ServerFire();
+	if (GetLocalRole() < ROLE_Authority) ServerFire();
 
 	// Check ammo
 	if (AmmoCount <= 0) return;
@@ -149,7 +149,7 @@ void ASWeapon::Fire()
 
 		LastFiredTime = GetWorld()->TimeSeconds;
 
-		if (Role == ROLE_Authority)
+		if (GetLocalRole() == ROLE_Authority)
 		{
 			HitScanTrace.TraceTo = TracerEndPoint;
 			HitScanTrace.SurfaceType = SurfaceType;
@@ -190,7 +190,7 @@ void ASWeapon::Reload()
 {
 	if (AmmoCount == MaxAmmoCount) return;
 
-	if (Role < ROLE_Authority) ServerReload();	
+	if (GetLocalRole() < ROLE_Authority) ServerReload();
 	else AmmoCount = MaxAmmoCount;
 }
 

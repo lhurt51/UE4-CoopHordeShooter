@@ -32,7 +32,7 @@ void ASPickupActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (Role == ROLE_Authority) Respawn();
+	if (GetLocalRole() == ROLE_Authority) Respawn();
 }
 
 void ASPickupActor::Respawn()
@@ -58,7 +58,7 @@ void ASPickupActor::NotifyActorBeginOverlap(AActor* OtherActor)
 	if (PlayerPawn && PlayerPawn->IsPlayerControlled())
 	{
 		// Grant a powerup to player if available
-		if (Role == ROLE_Authority && PowerupInstance)
+		if (GetLocalRole() == ROLE_Authority && PowerupInstance)
 		{
 			PowerupInstance->ActivatePowerup(OtherActor);
 			PowerupInstance = nullptr;

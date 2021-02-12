@@ -8,7 +8,7 @@ public class CoopShooterEditorTarget : TargetRules
 	public CoopShooterEditorTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
-
-		ExtraModuleNames.AddRange( new string[] { "CoopShooter" } );
-	}
+		DefaultBuildSettings = BuildSettingsVersion.V1;
+		ExtraModuleNames.AddRange(new string[] { "CoopShooter" });
+    }
 }

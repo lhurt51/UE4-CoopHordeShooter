@@ -1,12 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "SExplosiveBarrel.h"
+#include "Challenges/SExplosiveBarrel.h"
 
 #include "Kismet/GameplayStatics.h"
 #include "PhysicsEngine/RadialForceComponent.h"
 #include "Net/UnrealNetwork.h"
 
-#include "SHealthComponent.h"
+#include "Components/SHealthComponent.h"
 
 
 // Sets default values

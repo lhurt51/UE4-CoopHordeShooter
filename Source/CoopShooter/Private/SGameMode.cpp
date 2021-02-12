@@ -4,7 +4,7 @@
 
 #include "TimerManager.h"
 
-#include "SHealthComponent.h"
+#include "Components/SHealthComponent.h"
 #include "SGameState.h"
 #include "SPlayerState.h"
 #include "SCharacter.h"
