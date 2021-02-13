@@ -2,8 +2,11 @@
 
 #include "SGameMode.h"
 
+// Engine Includes
 #include "TimerManager.h"
+#include "EngineUtils.h"
 
+// Project Includes
 #include "Components/SHealthComponent.h"
 #include "SGameState.h"
 #include "SPlayerState.h"
@@ -71,9 +74,9 @@ void ASGameMode::CheckWaveState()
 
 	bool bIsAnyBotAlive = false;
 
-	for (FConstPawnIterator It = GetWorld()->GetPawnIterator(); It; ++It)
+	for (TActorIterator<APawn> PawnItr = TActorIterator<APawn>(GetWorld()); PawnItr; ++PawnItr)
 	{
-		APawn* TestPawn = It->Get();
+		APawn* TestPawn = *PawnItr;
 		if (TestPawn == nullptr || TestPawn->IsPlayerControlled()) continue;
 
 		USHealthComponent* HealthComp = Cast<USHealthComponent>(TestPawn->GetComponentByClass(USHealthComponent::StaticClass()));

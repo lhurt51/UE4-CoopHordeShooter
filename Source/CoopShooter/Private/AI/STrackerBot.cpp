@@ -2,6 +2,7 @@
 
 #include "AI/STrackerBot.h"
 
+// Engine Includes
 #include "Components/StaticMeshComponent.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -10,7 +11,9 @@
 #include "GameFramework/Character.h"
 #include "Sound/SoundCue.h"
 #include "DrawDebugHelpers.h"
+#include "EngineUtils.h"
 
+// Project Includes
 #include "Components/SHealthComponent.h"
 #include "SCharacter.h"
 
@@ -87,9 +90,9 @@ FVector ASTrackerBot::GetNextPathPoint()
 	AActor* BestTarget = nullptr;
 	float NearestTargetDst = FLT_MAX;
 
-	for (FConstPawnIterator It = GetWorld()->GetPawnIterator(); It; ++It)
+	for (TActorIterator<APawn> PawnItr = TActorIterator<APawn>(GetWorld()); PawnItr; ++PawnItr)
 	{
-		APawn* TestPawn = It->Get();
+		APawn* TestPawn = *PawnItr;
 		if (TestPawn == nullptr || USHealthComponent::IsFriendly(TestPawn, this)) continue;
 
 		USHealthComponent* TestPawnHealthComp = Cast<USHealthComponent>(TestPawn->GetComponentByClass(USHealthComponent::StaticClass()));
