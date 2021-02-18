@@ -9,7 +9,8 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
-				"Engine"
+				"Engine",
+				"UMG"
 			]
 		}
 	],
@@ -33,6 +34,18 @@
 		{
 			"Name": "CLionSourceCodeAccess",
 			"Enabled": false
+		},
+		{
+			"Name": "Linter",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/ca0639af6339476da86fa3bcf15de8ec"
 		}
+	],
+	"TargetPlatforms": [
+		"AllDesktop",
+		"WindowsNoEditor",
+		"LinuxNoEditor",
+		"LinuxAArch64NoEditor",
+		"MacNoEditor"
 	]
 }
