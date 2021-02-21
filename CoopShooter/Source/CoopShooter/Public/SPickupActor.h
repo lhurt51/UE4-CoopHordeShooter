@@ -14,14 +14,8 @@ UCLASS()
 class COOPSHOOTER_API ASPickupActor : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	ASPickupActor();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	USphereComponent* SphereComp;
@@ -39,12 +33,20 @@ protected:
 
 	FTimerHandle TimerHandle_RespawnTimer;
 
-	UFUNCTION()
-	void Respawn();
-
 public:	
 	
+	// Sets default values for this actor's properties
+	ASPickupActor();
+
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+
+protected:
+
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+	UFUNCTION()
+	void Respawn();
 	
 	
 };

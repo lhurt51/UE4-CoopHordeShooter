@@ -16,11 +16,8 @@ class COOPSHOOTER_API ASCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-public:
-	// Sets default values for this character's properties
-	ASCharacter();
-
 protected:
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UCameraComponent* CameraComp;
 
@@ -55,6 +52,27 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	TSubclassOf<ASWeapon> StarterWeaponClass;
 
+public:
+
+	// Sets default values for this character's properties
+	ASCharacter();
+
+	UFUNCTION(BlueprintCallable, Category = "Player")
+	void StartFire();
+
+	UFUNCTION(BlueprintCallable, Category = "Player")
+	void StopFire();
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	virtual FVector GetPawnViewLocation() const override;
+
+protected:
+	
 	virtual void BeginPlay() override;
 
 	void MoveForward(float Value);
@@ -75,20 +93,4 @@ protected:
 	UFUNCTION()
 	void OnHealthChanged(USHealthComponent* InHealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
-public:
-
-	UFUNCTION(BlueprintCallable, Category = "Player")
-	void StartFire();
-
-	UFUNCTION(BlueprintCallable, Category = "Player")
-	void StopFire();
-
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	virtual FVector GetPawnViewLocation() const override;
-	
 };

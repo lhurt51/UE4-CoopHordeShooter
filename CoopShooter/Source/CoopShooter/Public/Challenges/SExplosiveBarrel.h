@@ -15,12 +15,9 @@ UCLASS()
 class COOPSHOOTER_API ASExplosiveBarrel : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	ASExplosiveBarrel();
 
 protected:
+
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	USHealthComponent* HealthComp;
 
@@ -41,6 +38,13 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "FX")
 	UMaterialInterface* ExplodedMat;
+
+public:
+
+	// Sets default values for this actor's properties
+	ASExplosiveBarrel();
+
+protected:
 
 	UFUNCTION()
 	void OnRep_Exploded();

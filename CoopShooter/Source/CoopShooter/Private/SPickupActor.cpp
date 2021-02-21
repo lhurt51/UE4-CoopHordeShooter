@@ -27,6 +27,26 @@ ASPickupActor::ASPickupActor()
 	SetReplicates(true);
 }
 
+void ASPickupActor::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	Super::NotifyActorBeginOverlap(OtherActor);
+
+	ASCharacter* PlayerPawn = Cast<ASCharacter>(OtherActor);
+
+	if (PlayerPawn && PlayerPawn->IsPlayerControlled())
+	{
+		// Grant a powerup to player if available
+		if (GetLocalRole() == ROLE_Authority && PowerupInstance)
+		{
+			PowerupInstance->ActivatePowerup(OtherActor);
+			PowerupInstance = nullptr;
+
+			// SetTimer to respawn
+			GetWorldTimerManager().SetTimer(TimerHandle_RespawnTimer, this, &ASPickupActor::Respawn, CooldownDuration);
+		}
+	}
+}
+
 // Called when the game starts or when spawned
 void ASPickupActor::BeginPlay()
 {
@@ -47,26 +67,6 @@ void ASPickupActor::Respawn()
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	PowerupInstance = GetWorld()->SpawnActor<ASPowerupActor>(PowerupClass, GetTransform(), SpawnParams);
-}
-
-void ASPickupActor::NotifyActorBeginOverlap(AActor* OtherActor)
-{
-	Super::NotifyActorBeginOverlap(OtherActor);
-
-	ASCharacter* PlayerPawn = Cast<ASCharacter>(OtherActor);
-
-	if (PlayerPawn && PlayerPawn->IsPlayerControlled())
-	{
-		// Grant a powerup to player if available
-		if (GetLocalRole() == ROLE_Authority && PowerupInstance)
-		{
-			PowerupInstance->ActivatePowerup(OtherActor);
-			PowerupInstance = nullptr;
-
-			// SetTimer to respawn
-			GetWorldTimerManager().SetTimer(TimerHandle_RespawnTimer, this, &ASPickupActor::Respawn, CooldownDuration);
-		}
-	}
 }
 
 

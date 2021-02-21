@@ -15,13 +15,7 @@ class COOPSHOOTER_API ASTrackerBot : public APawn
 {
 	GENERATED_BODY()
 
-public:
-	// Sets default values for this pawn's properties
-	ASTrackerBot();
-
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Componenets")
 	UStaticMeshComponent* MeshComp;
@@ -76,10 +70,25 @@ protected:
 	// The power boost of the bot, affects damaged cause to enemied and color of the bot (1 to 4)
 	int32 PowerLevel;
 
+public:
+
+	// Sets default values for this pawn's properties
+	ASTrackerBot();
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+
+protected:
+
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
 	void DamageSelf();
 
 	UFUNCTION()
-	void HandleTakeDamage(USHealthComponent* InHealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+		void HandleTakeDamage(USHealthComponent* InHealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
 	FVector GetNextPathPoint();
 
@@ -89,11 +98,5 @@ protected:
 
 	// Find nearby enenmies and grow in 'power level' based on the amount
 	void OnCheckNearbyBots();
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 	
 };

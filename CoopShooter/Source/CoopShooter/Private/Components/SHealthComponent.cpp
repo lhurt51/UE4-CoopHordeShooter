@@ -18,6 +18,36 @@ USHealthComponent::USHealthComponent()
 	bIsDead = false;
 }
 
+void USHealthComponent::Heal(float HealAmount)
+{
+	if (HealAmount <= 0.0f || Health <= 0.0f) return;
+
+	Health = FMath::Clamp(Health + HealAmount, 0.0f, DefaultHealth);
+
+	UE_LOG(LogTemp, Log, TEXT("Health Changed: %s (+%s)"), *FString::SanitizeFloat(Health), *FString::SanitizeFloat(HealAmount));
+
+	OnHealthChanged.Broadcast(this, Health, -HealAmount, nullptr, nullptr, nullptr);
+}
+
+float USHealthComponent::GetHealth() const
+{
+	return Health;
+}
+
+bool USHealthComponent::IsFriendly(AActor* ActorA, AActor* ActorB)
+{
+	// If nullptr assume friendly
+	if (ActorA == nullptr, ActorB == nullptr) return true;
+
+	USHealthComponent* HealthCompA = Cast<USHealthComponent>(ActorA->GetComponentByClass(USHealthComponent::StaticClass()));
+	USHealthComponent* HealthCompB = Cast<USHealthComponent>(ActorB->GetComponentByClass(USHealthComponent::StaticClass()));
+
+	// If nullptr assume friendly
+	if (HealthCompA == nullptr || HealthCompB == nullptr) return true;
+
+	return HealthCompA->TeamNum == HealthCompB->TeamNum;
+}
+
 // Called when the game starts
 void USHealthComponent::BeginPlay()
 {
@@ -63,36 +93,6 @@ void USHealthComponent::HandleTakeAnyDamage(AActor* DamageActor, float Damage, c
 		ASGameMode* GM = Cast<ASGameMode>(GetWorld()->GetAuthGameMode());
 		if (GM) GM->OnActorKilled.Broadcast(GetOwner(), InstigatedBy);
 	}
-}
-
-void USHealthComponent::Heal(float HealAmount)
-{
-	if (HealAmount <= 0.0f || Health <= 0.0f) return;
-
-	Health = FMath::Clamp(Health + HealAmount, 0.0f, DefaultHealth);
-
-	UE_LOG(LogTemp, Log, TEXT("Health Changed: %s (+%s)"), *FString::SanitizeFloat(Health), *FString::SanitizeFloat(HealAmount));
-
-	OnHealthChanged.Broadcast(this, Health, -HealAmount, nullptr, nullptr, nullptr);
-}
-
-float USHealthComponent::GetHealth() const
-{
-	return Health;
-}
-
-bool USHealthComponent::IsFriendly(AActor * ActorA, AActor * ActorB)
-{
-	// If nullptr assume friendly
-	if (ActorA == nullptr, ActorB == nullptr) return true;
-
-	USHealthComponent* HealthCompA = Cast<USHealthComponent>(ActorA->GetComponentByClass(USHealthComponent::StaticClass()));
-	USHealthComponent* HealthCompB = Cast<USHealthComponent>(ActorB->GetComponentByClass(USHealthComponent::StaticClass()));
-
-	// If nullptr assume friendly
-	if (HealthCompA == nullptr || HealthCompB == nullptr) return true;
-
-	return HealthCompA->TeamNum == HealthCompB->TeamNum;
 }
 
 void USHealthComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

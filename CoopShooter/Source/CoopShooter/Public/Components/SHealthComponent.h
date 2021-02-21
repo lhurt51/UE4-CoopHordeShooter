@@ -15,11 +15,12 @@ class COOPSHOOTER_API USHealthComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
-	USHealthComponent();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "HealthComponent")
 	uint8 TeamNum;
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnHealthChangedSignature OnHealthChanged;
 
 protected:
 
@@ -31,19 +32,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HealthComponent")
 	float DefaultHealth;
 
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
-	UFUNCTION()
-	void OnRep_Health(float OldHealth);
-
-	UFUNCTION()
-	void HandleTakeAnyDamage(AActor* DamageActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
-
 public:
 
-	UPROPERTY(BlueprintAssignable, Category = "Events")
-	FOnHealthChangedSignature OnHealthChanged;
+	// Sets default values for this component's properties
+	USHealthComponent();
 
 	UFUNCTION(BlueprintCallable, Category = "HealthComponent")
 	void Heal(float HealAmount);
@@ -52,5 +44,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "HealthComponent")
 	static bool IsFriendly(AActor* ActorA, AActor* ActorB);
+
+protected:
+
+	// Called when the game starts
+	virtual void BeginPlay() override;
+
+	UFUNCTION()
+	void OnRep_Health(float OldHealth);
+
+	UFUNCTION()
+	void HandleTakeAnyDamage(AActor* DamageActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 	
 };

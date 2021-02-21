@@ -13,12 +13,9 @@ UCLASS()
 class COOPSHOOTER_API ASPowerupActor : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	ASPowerupActor();
 
 protected:
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	UStaticMeshComponent* MeshComp;
 
@@ -41,16 +38,10 @@ protected:
 	UPROPERTY(ReplicatedUsing=OnRep_PowerActive)
 	bool bIsPowerupActive;
 
-	UFUNCTION()
-	void OnRep_PowerActive();
-
-	UFUNCTION(BlueprintImplementableEvent, Category = "Powerups")
-	void OnPowerupStateChanged(bool bNewIsActive);
-
-	UFUNCTION()
-	void OnTickPowerup();
-
 public:
+
+	// Sets default values for this actor's properties
+	ASPowerupActor();
 
 	void ActivatePowerup(AActor* ActiveFor);
 	
@@ -63,6 +54,15 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Powerups")
 	void OnExpired();
 
-	
+protected:
+
+	UFUNCTION()
+	void OnRep_PowerActive();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Powerups")
+	void OnPowerupStateChanged(bool bNewIsActive);
+
+	UFUNCTION()
+	void OnTickPowerup();
 	
 };

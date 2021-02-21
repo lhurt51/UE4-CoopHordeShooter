@@ -29,12 +29,9 @@ UCLASS()
 class COOPSHOOTER_API ASWeapon : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	ASWeapon();
 
 protected:
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USkeletalMeshComponent* MeshComp;
 
@@ -90,21 +87,8 @@ protected:
 	UPROPERTY(ReplicatedUsing=OnRep_HitScanTrace)
 	FHitScanTrace HitScanTrace;
 
-	virtual void BeginPlay() override;
-
-	void PlayFireEffects(FVector TraceEnd);
-
-	void PlayImpactEffects(EPhysicalSurface SurfaceType, FVector ImpactPoint);
-
-	virtual void Fire();
-
-	UFUNCTION(Server, Reliable, WithValidation)
-	void ServerFire();
-
-	UFUNCTION()
-	void OnRep_HitScanTrace();
-
 private:
+
 	// Time between shots timer handle
 	FTimerHandle TimerHandle_TimeBetweenShots;
 
@@ -118,16 +102,36 @@ private:
 
 public:
 
+	// Sets default values for this actor's properties
+	ASWeapon();
+
 	void StartFire();
 
 	void StopFire();
 
+	// Both reload and server reload should be protected
 	void Reload();
 
 	UFUNCTION(Server, Reliable, WithValidation)
 	void ServerReload();
 
 	void OnDeath();
+
+protected:
+
+	virtual void BeginPlay() override;
+
+	void PlayFireEffects(FVector TraceEnd);
+
+	void PlayImpactEffects(EPhysicalSurface SurfaceType, FVector ImpactPoint);
+
+	virtual void Fire();
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerFire();
+
+	UFUNCTION()
+	void OnRep_HitScanTrace();
 
 	
 };

@@ -30,6 +30,17 @@ ASPowerupActor::ASPowerupActor()
 	SetReplicates(true);
 }
 
+void ASPowerupActor::ActivatePowerup(AActor* ActiveFor)
+{
+	OnActivated(ActiveFor);
+
+	bIsPowerupActive = true;
+	OnRep_PowerActive();
+
+	if (PowerupInterval > 0.0f) GetWorldTimerManager().SetTimer(TimerHandle_PowerupTick, this, &ASPowerupActor::OnTickPowerup, PowerupInterval, true);
+	else OnTickPowerup();
+}
+
 void ASPowerupActor::OnRep_PowerActive()
 {
 	OnPowerupStateChanged(bIsPowerupActive);
@@ -47,17 +58,6 @@ void ASPowerupActor::OnTickPowerup()
 		// Delete timer
 		GetWorldTimerManager().ClearTimer(TimerHandle_PowerupTick);
 	}
-}
-
-void ASPowerupActor::ActivatePowerup(AActor* ActiveFor)
-{
-	OnActivated(ActiveFor);
-
-	bIsPowerupActive = true;
-	OnRep_PowerActive();
-
-	if (PowerupInterval > 0.0f) GetWorldTimerManager().SetTimer(TimerHandle_PowerupTick, this, &ASPowerupActor::OnTickPowerup, PowerupInterval, true);
-	else OnTickPowerup();
 }
 
 void ASPowerupActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

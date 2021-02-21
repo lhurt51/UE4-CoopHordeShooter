@@ -20,9 +20,8 @@ class COOPSHOOTER_API ASGameMode : public AGameModeBase
 
 public:
 
-	ASGameMode();
-
-	virtual void StartPlay() override;
+	UPROPERTY(BlueprintAssignable, Category = "GameMode")
+	FOnActorKilled OnActorKilled;
 
 protected:
 
@@ -37,6 +36,16 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "GameMode")
 	float TimeBetweenWaves;
+
+public:
+
+	ASGameMode();
+
+	virtual void StartPlay() override;
+
+	virtual void Tick(float DeltaSeconds) override;
+
+protected:
 
 	// Hook for BP to spawn a single bot
 	UFUNCTION(BlueprintImplementableEvent, Category = "GameMode")
@@ -62,12 +71,5 @@ protected:
 	void SetWaveState(EWaveState NewState);
 
 	void RestartDeadPlayers();
-
-public:
-
-	virtual void Tick(float DeltaSeconds) override;
-
-	UPROPERTY(BlueprintAssignable, Category = "GameMode")
-	FOnActorKilled OnActorKilled;
 
 };

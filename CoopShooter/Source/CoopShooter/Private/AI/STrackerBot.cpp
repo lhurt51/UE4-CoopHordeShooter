@@ -51,11 +51,58 @@ ASTrackerBot::ASTrackerBot()
 	SelfDamageInterval = 0.25f;
 }
 
+// Called every frame
+void ASTrackerBot::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (GetLocalRole() == ROLE_Authority && !bExploded)
+	{
+		float DstToTarget = (GetActorLocation() - NextPathPoint).Size();
+
+		if (DstToTarget <= RequiredDstToTarget) RefreshPath();
+		else
+		{
+			// Keep moving towards next target
+			FVector ForceDir = NextPathPoint - GetActorLocation();
+			ForceDir.Normalize();
+			ForceDir *= MovementForce;
+
+			MeshComp->AddForce(ForceDir, NAME_None, bUseVelocityChange);
+
+			if (DebugTrackerBotDrawing) DrawDebugDirectionalArrow(GetWorld(), GetActorLocation(), GetActorLocation() + ForceDir, 32, FColor::Yellow, false, 0.0f, 0, 1.0f);
+		}
+
+		if (DebugTrackerBotDrawing) DrawDebugSphere(GetWorld(), NextPathPoint, 20, 12, FColor::Yellow, false, 0.0f, 1.0f);
+	}
+}
+
+void ASTrackerBot::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	Super::NotifyActorBeginOverlap(OtherActor);
+
+	if (!bStartedSelfDestruction && !bExploded)
+	{
+		ASCharacter* PlayerPawn = Cast<ASCharacter>(OtherActor);
+
+		if (PlayerPawn && !USHealthComponent::IsFriendly(OtherActor, this)) /* We overlapped with a player*/
+		{
+			/* Start self destruction sequence */
+			if (GetLocalRole() == ROLE_Authority) GetWorldTimerManager().SetTimer(TimerHandle_SelfDamage, this, &ASTrackerBot::DamageSelf, SelfDamageInterval, true, 0.0f);
+
+			bStartedSelfDestruction = true;
+
+			UGameplayStatics::SpawnSoundAttached(SelfDestructSound, RootComponent);
+		}
+	}
+	
+}
+
 // Called when the game starts or when spawned
 void ASTrackerBot::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	if (GetLocalRole() == ROLE_Authority)
 	{
 		// Find initial move to
@@ -208,49 +255,3 @@ void ASTrackerBot::OnCheckNearbyBots()
 	}
 }
 
-// Called every frame
-void ASTrackerBot::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	if (GetLocalRole() == ROLE_Authority && !bExploded)
-	{
-		float DstToTarget = (GetActorLocation() - NextPathPoint).Size();
-
-		if (DstToTarget <= RequiredDstToTarget) RefreshPath();
-		else
-		{
-			// Keep moving towards next target
-			FVector ForceDir = NextPathPoint - GetActorLocation();
-			ForceDir.Normalize();
-			ForceDir *= MovementForce;
-
-			MeshComp->AddForce(ForceDir, NAME_None, bUseVelocityChange);
-
-			if (DebugTrackerBotDrawing) DrawDebugDirectionalArrow(GetWorld(), GetActorLocation(), GetActorLocation() + ForceDir, 32, FColor::Yellow, false, 0.0f, 0, 1.0f);
-		}
-
-		if (DebugTrackerBotDrawing) DrawDebugSphere(GetWorld(), NextPathPoint, 20, 12, FColor::Yellow, false, 0.0f, 1.0f);
-	}
-}
-
-void ASTrackerBot::NotifyActorBeginOverlap(AActor* OtherActor)
-{
-	Super::NotifyActorBeginOverlap(OtherActor);
-
-	if (!bStartedSelfDestruction && !bExploded)
-	{
-		ASCharacter* PlayerPawn = Cast<ASCharacter>(OtherActor);
-
-		if (PlayerPawn && !USHealthComponent::IsFriendly(OtherActor, this)) /* We overlapped with a player*/
-		{
-			/* Start self destruction sequence */
-			if (GetLocalRole() == ROLE_Authority) GetWorldTimerManager().SetTimer(TimerHandle_SelfDamage, this, &ASTrackerBot::DamageSelf, SelfDamageInterval, true, 0.0f);
-
-			bStartedSelfDestruction = true;
-
-			UGameplayStatics::SpawnSoundAttached(SelfDestructSound, RootComponent);
-		}
-	}
-	
-}

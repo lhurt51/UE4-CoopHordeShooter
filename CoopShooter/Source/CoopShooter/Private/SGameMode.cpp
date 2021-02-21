@@ -30,6 +30,14 @@ void ASGameMode::StartPlay()
 	PrepareForNextWave();
 }
 
+void ASGameMode::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	CheckWaveState();
+	CheckAnyPlayerAlive();
+}
+
 void ASGameMode::SpawnBotTimerElapsed()
 {
 	SpawnNewBot();
@@ -136,12 +144,4 @@ void ASGameMode::RestartDeadPlayers()
 		/* Need to fix the player respawn system */
 		if (PC && PC->GetPawn() == nullptr) RestartPlayer(PC);
 	}
-}
-
-void ASGameMode::Tick(float DeltaSeconds)
-{
-	Super::Tick(DeltaSeconds);
-
-	CheckWaveState();
-	CheckAnyPlayerAlive();
 }

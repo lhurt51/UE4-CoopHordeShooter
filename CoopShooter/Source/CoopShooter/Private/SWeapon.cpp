@@ -39,6 +39,44 @@ ASWeapon::ASWeapon()
 	MinNetUpdateFrequency = 33.0f;
 }
 
+void ASWeapon::StartFire()
+{
+	float FirstDelay = FMath::Max(LastFiredTime + TimeBetweenShots - GetWorld()->TimeSeconds, 0.0f);
+
+	GetWorldTimerManager().SetTimer(TimerHandle_TimeBetweenShots, this, &ASWeapon::Fire, TimeBetweenShots, bIsAutomatic, FirstDelay);
+}
+
+void ASWeapon::StopFire()
+{
+	GetWorldTimerManager().ClearTimer(TimerHandle_TimeBetweenShots);
+}
+
+void ASWeapon::Reload()
+{
+	if (AmmoCount == MaxAmmoCount) return;
+
+	if (GetLocalRole() < ROLE_Authority) ServerReload();
+	else AmmoCount = MaxAmmoCount;
+}
+
+void ASWeapon::OnDeath()
+{
+	DetachFromActor(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
+	MeshComp->SetCollisionProfileName(FName("PhysicsActor"));
+	MeshComp->SetSimulatePhysics(true);
+	SetLifeSpan(7.5f);
+}
+
+void ASWeapon::ServerReload_Implementation()
+{
+	Reload();
+}
+
+bool ASWeapon::ServerReload_Validate()
+{
+	return true;
+}
+
 void ASWeapon::BeginPlay()
 {
 	Super::BeginPlay();
@@ -144,7 +182,7 @@ void ASWeapon::Fire()
 		}
 
 		if (DebugWeaponDrawing > 0) DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::White, false, 1.0f, 0, 1.0f);
-		
+
 		PlayFireEffects(TracerEndPoint);
 
 		LastFiredTime = GetWorld()->TimeSeconds;
@@ -164,6 +202,7 @@ void ASWeapon::ServerFire_Implementation()
 
 bool ASWeapon::ServerFire_Validate()
 {
+	// Do a check to make sure the player has ammo in the magazine
 	return true;
 }
 
@@ -172,44 +211,6 @@ void ASWeapon::OnRep_HitScanTrace()
 	// Play cosmetric FX
 	PlayFireEffects(HitScanTrace.TraceTo);
 	PlayImpactEffects(HitScanTrace.SurfaceType, HitScanTrace.TraceTo);
-}
-
-void ASWeapon::StartFire()
-{
-	float FirstDelay = FMath::Max(LastFiredTime + TimeBetweenShots - GetWorld()->TimeSeconds, 0.0f);
-
-	GetWorldTimerManager().SetTimer(TimerHandle_TimeBetweenShots, this, &ASWeapon::Fire, TimeBetweenShots, bIsAutomatic, FirstDelay);
-}
-
-void ASWeapon::StopFire()
-{
-	GetWorldTimerManager().ClearTimer(TimerHandle_TimeBetweenShots);
-}
-
-void ASWeapon::Reload()
-{
-	if (AmmoCount == MaxAmmoCount) return;
-
-	if (GetLocalRole() < ROLE_Authority) ServerReload();
-	else AmmoCount = MaxAmmoCount;
-}
-
-void ASWeapon::OnDeath()
-{
-	DetachFromActor(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
-	MeshComp->SetCollisionProfileName(FName("PhysicsActor"));
-	MeshComp->SetSimulatePhysics(true);
-	SetLifeSpan(7.5f);
-}
-
-void ASWeapon::ServerReload_Implementation()
-{
-	Reload();
-}
-
-bool ASWeapon::ServerReload_Validate()
-{
-	return true;
 }
 
 void ASWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

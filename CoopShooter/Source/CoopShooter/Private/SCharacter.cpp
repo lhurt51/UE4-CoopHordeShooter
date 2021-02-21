@@ -38,6 +38,59 @@ ASCharacter::ASCharacter()
 	WeaponAttachSocketName = "WeaponSocket";
 }
 
+void ASCharacter::StartFire()
+{
+	if (CurrentWeapon) CurrentWeapon->StartFire();
+}
+
+void ASCharacter::StopFire()
+{
+	if (CurrentWeapon) CurrentWeapon->StopFire();
+}
+
+// Called every frame
+void ASCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	// Zoom functionality in tick to be smooth using interpolation
+	float TargetFOV = bWantsToZoom ? ZoomedFOV : DefaultFOV;
+	float NewFOV = FMath::FInterpTo(CameraComp->FieldOfView, TargetFOV, DeltaTime, ZoomInterpSpeed);
+
+	CameraComp->SetFieldOfView(NewFOV);
+}
+
+// Called to bind functionality to input
+void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	PlayerInputComponent->BindAxis("MoveForward", this, &ASCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &ASCharacter::MoveRight);
+
+	PlayerInputComponent->BindAxis("LookUp", this, &ASCharacter::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("Turn", this, &ASCharacter::AddControllerYawInput);
+
+	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &ASCharacter::BeginCrouch);
+	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &ASCharacter::EndCrouch);
+
+	PlayerInputComponent->BindAction("Zoom", IE_Pressed, this, &ASCharacter::BeginZoom);
+	PlayerInputComponent->BindAction("Zoom", IE_Released, this, &ASCharacter::EndZoom);
+
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ASCharacter::StartFire);
+	PlayerInputComponent->BindAction("Fire", IE_Released, this, &ASCharacter::StopFire);
+
+	// Challenge code
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASCharacter::Jump);
+	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &ASCharacter::Reload);
+}
+
+FVector ASCharacter::GetPawnViewLocation() const
+{
+	if (CameraComp) return CameraComp->GetComponentLocation();
+	return Super::GetPawnViewLocation();
+}
+
 // Called when the game starts or when spawned
 void ASCharacter::BeginPlay()
 {
@@ -116,59 +169,6 @@ void ASCharacter::OnHealthChanged(USHealthComponent* InHealthComp, float Health,
 
 		SetLifeSpan(5.0f);
 	}
-}
-
-void ASCharacter::StartFire()
-{
-	if (CurrentWeapon) CurrentWeapon->StartFire();
-}
-
-void ASCharacter::StopFire()
-{
-	if (CurrentWeapon) CurrentWeapon->StopFire();
-}
-
-// Called every frame
-void ASCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	// Zoom functionality in tick to be smooth using interpolation
-	float TargetFOV = bWantsToZoom ? ZoomedFOV : DefaultFOV;
-	float NewFOV = FMath::FInterpTo(CameraComp->FieldOfView, TargetFOV, DeltaTime, ZoomInterpSpeed);
-
-	CameraComp->SetFieldOfView(NewFOV);
-}
-
-// Called to bind functionality to input
-void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	PlayerInputComponent->BindAxis("MoveForward", this, &ASCharacter::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &ASCharacter::MoveRight);
-
-	PlayerInputComponent->BindAxis("LookUp", this, &ASCharacter::AddControllerPitchInput);
-	PlayerInputComponent->BindAxis("Turn", this, &ASCharacter::AddControllerYawInput);
-
-	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &ASCharacter::BeginCrouch);
-	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &ASCharacter::EndCrouch);
-
-	PlayerInputComponent->BindAction("Zoom", IE_Pressed, this, &ASCharacter::BeginZoom);
-	PlayerInputComponent->BindAction("Zoom", IE_Released, this, &ASCharacter::EndZoom);
-
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ASCharacter::StartFire);
-	PlayerInputComponent->BindAction("Fire", IE_Released, this, &ASCharacter::StopFire);
-
-	// Challenge code
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASCharacter::Jump);
-	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &ASCharacter::Reload);
-}
-
-FVector ASCharacter::GetPawnViewLocation() const
-{
-	if (CameraComp) return CameraComp->GetComponentLocation();
-	return Super::GetPawnViewLocation();
 }
 
 void ASCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
